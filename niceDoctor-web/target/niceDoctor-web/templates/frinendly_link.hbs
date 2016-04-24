@@ -1,0 +1,121 @@
+<nav class="breadcrumb" id="pathContainer">
+
+</nav>
+<div class="Hui-article mt-10" id="friendly_link" >
+        <table class="table table-border table-bordered table-hover">
+                <thead class="text-c row cl table-bgcolor-gary">
+                        <tr>
+                                <th class="col-2">链接名称</th>
+                                <th class="col-2">链接标识</th>
+                                <th class="col-2">链接排序</th>
+                                <th class="col-2">链接地址</th>
+                                <th class="col-1">状态</th>
+                                <th class="col-2">操作</th>
+                        </tr>
+                </thead>
+        </table>
+
+        <div class="table-maxHeight">
+                <table class="table table-border table-bordered table-hover bt-none">
+                        <tbody class="text-c row cl" id="ColumnTableData"></tbody>
+                </table>
+        </div>
+        <div id="layPage" class="text-c mt-20"></div>
+</div>
+
+<!-- 增删改查 -->
+<table id="onClickDataTable" class="table table-border table-bordered table-hover col-98" style="display:none"></table>
+
+<!-- 确认删除弹出层 -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+
+<div class="modal-header">
+        <h3 id="myModalLabel" class="h3">删除</h3>
+        <a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();">×</a>
+</div>
+<div class="modal-body">
+        <p class="mb-10">您好，确认删除这个用户么？</p>
+</div>
+<div class="modal-footer">
+        <button class="btn btn-primary radius">确定</button> <button class="btn radius" data-dismiss="modal" aria-hidden="true">关闭</button>
+</div>
+
+<!-- 加载导航栏 -->
+<script id="nav_location" type="text/x-handlebars-template"><!-- 新增链接页面-导航栏 -->
+    <i class="location-icon"></i><span>您的位置：</span><span>互动管理</span><span class="c-999 en">&gt;</span><span class="c-primary">链接管理</span>
+    <input class="btn size-MINI radius f-r mr-30" type="button" value="新增" onclick="new_link()" id="new_friendly_btn" >
+</script>
+<script id="nav_location_return" type="text/x-handlebars-template"><!-- 返回链接页面-导航栏 -->
+        <i class="location-icon"></i><span>您的位置：</span><span>互动管理</span><span class="c-999 en">&gt;</span><span>友情链接管理</span><span class="c-999 en">&gt;</span><span class="c-primary" id="true_location" >新增链接</span>
+        <input class="btn size-MINI radius f-r mr-30 mt-5" type="button" value="返回" onClick="friendly_link()">
+</script>
+
+
+<!-- 新增链接页面 -->
+<script id="new_link" type="text/x-handlebars-template">  
+        <tr>
+                <td class="col-2 text-r table-bgc-f5"><b>\{{linkName}}</b></td>
+                <td class="col-10"><input type="text" class="input-text input-col-3"></td>
+        </tr>
+        <tr>
+                <td class="col-2 text-r table-bgc-f5"><b>\{{leftSign}}</b></td>
+                <td class="col-10"><input type="text" class="input-text input-col-3"></td>
+        </tr>
+        <tr>
+                <td class="col-2 text-r table-bgc-f5"><b>\{{leftSort}}</b></td>
+                <td class="col-10"><input type="text" class="input-text input-col-3"></td>
+        </tr>
+        <tr>
+                <td class="col-2 text-r table-bgc-f5"><b>\{{leftAddress}}</b></td>
+                <td class="col-10"><input type="text" class="input-text input-col-3"></td>
+        </tr>
+        <tr>
+                <td class="col-2 text-r table-bgc-f5"><b>\{{leftState}}</b></td>
+                <td class="col-10">
+                    <span class="select-box input-col-3">
+                          <select class="select" size="1" name="demo1" id="select">
+                                <option value="1">已启动</option>
+                                <option value="2">已停用</option>
+                          </select>
+                    </span>
+                </td>
+        </tr>
+        <tr>
+                <td colspan="2" class="text-c"> <input type="button" class="btn btn-default radius" value="提交"></td>
+        </tr>
+</script>
+
+<!-- 查看链接页面 -->
+<script id="check_link" type="text/x-handlebars-template">  
+        \{{#each link}}
+                <tr>
+                        <td class="col-2 text-r table-bgc-f5"><b>\{{key}}</b></td>
+                        <td class="col-10">\{{value}}</td>
+                </tr>
+        \{{/each}}
+</script>
+
+<!-- 友情链接管理页面 -->
+<script id="getColumnTableData" type="text/x-handlebars-template">
+        \{{#each link}}
+                <tr>
+                      <td class="col-2">\{{link_name}}</td>
+                      <td class="col-2">\{{link_sign}}</td>
+                      <td class="col-2">\{{link_sort}}</td>
+                      <td class="col-2">\{{link_address}}</td>
+                      <td class="col-1">\{{link_state}}</td>
+                      <td class="col-2">
+                              <input class="btn btn-secondary size-S radius" type="button" value="查看" onclick="check_link()">
+                              <input class="btn btn-primary size-S radius" type="button" value="编辑">
+                              <input class="btn btn-danger  size-S radius" type="button" value="重置密码">
+                              <a data-toggle="modal" href="#myModal" class="btn btn-danger  size-S radius">删除</a>
+                      </td>
+                </tr>
+        \{{/each}}
+</script>
+
+<script>
+    new friendly_link();
+
+</script>

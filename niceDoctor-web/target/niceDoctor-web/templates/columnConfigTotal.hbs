@@ -1,0 +1,254 @@
+<nav class="breadcrumb" id="pathContainer"></nav>
+<div class="Hui-article mt-10" id="columnManage">
+        <table class="table table-border table-bordered table-bgcolor-gary">
+                 <thead class="text-c row cl">
+                        <tr>
+								<th class="col-1">栏目排序</th>
+								<th class="col-2">栏目名称</th>
+								<th class="col-2">栏目模块名称</th>
+								<th class="col-2">是否在主导航显示</th>
+								<th class="col-2">状态</th>
+								<th class="col-3">操作</th>
+                        </tr>
+                 </thead>
+        </table>
+        <div class="table-maxHeight">
+                <table class="table table-border table-bordered table-hover bt-none">
+                        <tbody class="text-c row cl" id="ColumnTableData"></tbody>
+                </table>
+        </div>
+        <div id="layPage" class="text-c mt-20"></div>
+</div>
+
+<table id="onClickDataTable" class="page table table-border table-bordered table-hover col-98" style="display:none"></table>
+
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+			<h3 class="h3">删除</h3>
+			<a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();">×</a>
+	</div>
+	<div class="modal-body">
+			<p class="mb-10">您好，确认删除这个栏目么？</p>
+	</div>
+	<div class="modal-footer">
+			<button class="btn btn-primary radius" onClick="postDelColumnData(this)">确定</button> <button class="btn radius" data-dismiss="modal" aria-hidden="true">关闭</button>
+	</div>
+</div>
+
+<div id="parentsZTree" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+			<h3 id="myModalLabel" class="h3">父级权限</h3>
+			<a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();">×</a>
+	</div>
+	<div class="modal-body">
+			<div class="modal-treeMenu"></div>
+	</div>
+	<div class="modal-footer">
+			<button class="btn btn-primary radius" onClick="sureParents(this)">确定</button> <button class="btn radius" data-dismiss="modal" aria-hidden="true">关闭</button>
+	</div>
+</div>
+
+<div class="zTreeDemoBackground left">
+    <ul id="treeDemo" class="ztree"></ul>
+	<div class="slide_btn in">></div>
+</div>
+ <!-- 分割  -->
+
+<script id="navMain" type="text/x-handlebars-template">
+        <i class="location-icon"></i><span>您的位置：</span><span>栏目配置</span><span class="c-999 en">&gt;</span><span class="c-primary">栏目管理</span>
+        <input class="btn size-S radius f-r mr-30 mt-5" type="button" value="新增" onClick="columnNew()">
+</script>
+<script id="navEdit" type="text/x-handlebars-template">
+        <i class="location-icon"></i><span>您的位置：</span><span>栏目配置</span><span class="c-999 en">&gt;</span><span>栏目管理</span><span class="c-999 en">&gt;</span><span class="c-primary">编辑</span>
+        <input class="btn size-S radius f-r mr-30 mt-5" type="button" value="返回" onClick="columnManage()">
+</script>
+<script id="navNew" type="text/x-handlebars-template">
+        <i class="location-icon"></i><span>您的位置：</span><span>栏目配置</span><span class="c-999 en">&gt;</span><span>栏目管理</span><span class="c-999 en">&gt;</span><span class="c-primary">新增</span>
+        <input class="btn size-S radius f-r mr-30 mt-5" type="button" value="返回" onClick="columnManage()">
+</script>
+
+<script id="getColumnTableData" type="text/x-handlebars-template">
+		\{{#each result.resultList}}
+				<tr columnId="\{{id}}">
+					<td class="col-1">\{{addOne @index}}</td>
+					<td class="col-2">\{{name}}</th>
+					<td class="col-2">\{{shortName}}</th>
+					<td class="col-2">\{{isShowInNav}}</th>
+					<td class="col-2">\{{state}}</th>
+					<td class="col-3">
+						<input class="btn btn-secondary  size-S radius" type="button" value="编辑" onClick="columnEdit(this)">
+						<input class="btn btn-primary size-S radius" type="button" value="编辑新闻" onclick="Content(this)">
+						<input data-toggle="modal" href="#myModal" class="btn btn-danger size-S radius" type="button" value="删除" onclick="columnDel(this)">
+					</td>
+				</tr>
+		\{{/each}}
+</script>
+<script id="getNewDataColumn" type="text/x-handlebars-template"> 
+		<tr id="postColumnId">
+				<td class="col-1 text-r table-bgc-f5">父级栏目 ：</td>
+				<td class="col-11">
+						<a data-toggle="modal" href="#parentsZTree"><input  type="text" disabled="disabled" class="input-text input-col-3 bgTextColoe" value="" id="sureParents"></a>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">栏目名称 ：</td>
+				<td class="col-11"><input type="text" class="input-text input-col-3" id="postColumnName" value=""></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">栏目简称 ：</td>
+				<td class="col-11"><input type="text" class="input-text input-col-3" id="postColumnShortName" value=""></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">栏目模块名称 ：</td>
+				<td class="col-11"><input type="text" class="input-text input-col-3" value="" id="postColumnColumnKey"></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">栏目排序	 ：</td>
+				<td class="col-11"><input type="text" class="input-text input-col-3" id="postColumnSerial" value=""></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">模板类型 ：</td>
+				<td class="col-11">
+						<span class="select-box input-col-3">
+							  <select class="select" size="1" name="demo1" id="postColumnTemplate">
+									<option value="1" selected="selected">----</option>
+							  </select>
+						</span>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">是否在主导航显示 ：</td>
+				<td class="col-11">
+						<span class="select-box input-col-3">
+							  <select class="select" size="1" name="demo1" id="isShowInNav">
+									<option value="0" selected="selected">否</option>
+									<option value="1">是</option>
+							  </select>
+						</span>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">链接地址 ：</td>
+				<td class="col-11"><input type="text" class="input-text input-col-3" value="" id="postColumnLink"></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">栏目编号 ：</td>
+				<td class="col-11"><input type="text" class="input-text input-col-3" value="" id="postColumnNum"></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5 va-t">栏目介绍 ：</td>
+				<td class="col-11">
+						<textarea class="input-text input-col-3 bgTextColoe"></textarea>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">状态 ：</td>
+				<td class="col-11">
+						<span class="select-box input-col-3">
+							  <select class="select" size="1" name="demo1" id="columnState">
+									<option value="1" selected="selected">已启动</option>
+									<option value="0">已停用</option>
+							  </select>
+						</span>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 table-bgc-f5"></td>
+				<td class="text-l col-11"> <input class="btn btn-primary radius" onClick="columnPostNew()" type="submit" value="提交"></td>
+		</tr>
+</script>
+<script id="getEditDataColumn" type="text/x-handlebars-template"> 
+		<tr id="postColumnId" columnId="\{{result.id}}">
+				<td class="col-1 text-r table-bgc-f5">父级栏目 ：</td>
+				<td class="col-11">
+						<a data-toggle="modal" href="#parentsZTree"><input  type="text" disabled="disabled" class="input-text input-col-3 bgTextColoe" value="\{{result.parent}}" id="sureParents"></a>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">栏目名称 ：</td>
+				<td class="col-11"><input type="text" class="input-text input-col-3" id="postColumnName" value="\{{result.name}}"></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">栏目简称 ：</td>
+				<td class="col-11"><input type="text" class="input-text input-col-3" id="postColumnShortName" value="\{{result.shortName}}"></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">栏目模块名称 ：</td>
+				<td class="col-11"><input type="text" class="input-text input-col-3" value="\{{result.columnKey}}" id="postColumnColumnKey"></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">栏目排序	 ：</td>
+				<td class="col-11"><input type="text" class="input-text input-col-3" id="postColumnSerial" value="\{{result.serial}}"></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">模板类型 ：</td>
+				<td class="col-11">
+						<span class="select-box input-col-3">
+							  <select class="select" size="1" name="demo1" id="postColumnTemplate">
+									<option value="1" selected="selected">----</option>
+							  </select>
+						</span>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">是否在主导航显示 ：</td>
+				<td class="col-11">
+						<span class="select-box input-col-3">
+							  <select class="select" size="1" name="demo1" id="isShowInNav">
+									<option value="0">否</option>
+									<option value="1" selected="selected">是</option>
+							  </select>
+						</span>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">链接地址 ：</td>
+				<td class="col-11"><input type="text" class="input-text input-col-3" value="\{{result.link}}" id="postColumnLink"></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">栏目编号 ：</td>
+				<td class="col-11"><input type="text" class="input-text input-col-3" value="" id="postColumnNum"></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5 va-t">栏目介绍 ：</td>
+				<td class="col-11">
+						<textarea class="input-text input-col-3 bgTextColoe"></textarea>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">状态 ：</td>
+				<td class="col-11">
+						<span class="select-box input-col-3">
+							  <select class="select" size="1" name="demo1" id="columnState">
+									<option value="1">已启动</option>
+									<option value="0" selected="selected">已停用</option>
+							  </select>
+						</span>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 table-bgc-f5"></td>
+				<td class="text-l col-11"> <input class="btn btn-primary radius" onClick="columnPostEdit()" type="submit" value="提交"></td>
+		</tr>
+</script>
+
+<script>
+    $(document).ready(function(){
+        $(".zTreeDemoBackground").on("click",".slide_btn",function(){
+            if(parseInt($(".zTreeDemoBackground ").css("left"))==0){
+				$(".zTreeDemoBackground .slide_btn").html(">")
+                $(".zTreeDemoBackground").animate({left:"-250px"});
+                $(this).animate({right:"-10px"});
+                $(this).removeClass('in').addClass('out');
+            }else{
+				$(".zTreeDemoBackground .slide_btn").html("<")
+                $(".zTreeDemoBackground").animate({left:"0px"});
+                $(this).animate({right:"-5px"});
+                $(this).removeClass('out').addClass('in');
+            }
+        });
+    });
+</script>
+<script>
+	new columnManage();
+</script>

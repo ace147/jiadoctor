@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="niceDoctor-web"
+  id="myeclipse.1457196471498"
+  context-root="/niceDoctor-web"
+  j2ee-spec="1.7"
+  archive="niceDoctor-web.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebContent" />
+  </attributes>
+</project-module>
+

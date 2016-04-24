@@ -1,0 +1,156 @@
+﻿<nav class="breadcrumb" id="pathContainer"></nav>
+<div class="Hui-article mt-10" id="roleManagement">
+        <table class="table table-border table-bordered table-bgcolor-gary">
+                 <thead class="text-c row cl">
+                        <tr>
+                                <th class="col-2">角色名称</th>
+                                <th class="col-7">授权</th>
+                                <th class="col-1">状态</th>
+                                <th class="col-2">操作</th>
+                        </tr>
+                 </thead>
+        </table>
+        <div class="table-maxHeight">
+                <table class="table table-border table-bordered table-hover bt-none">
+                        <tbody class="text-c row cl" id="ColumnTableData"></tbody>
+                </table>
+        </div>
+        <div id="layPage" class="text-c mt-20"></div>
+</div>
+<table id="onClickDataTable" class="page table table-border table-bordered table-hover col-98" style="display:none"></table>
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+
+<div class="modal-header">
+        <h3 id="myModalLabel" class="h3">删除</h3>
+        <a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();">×</a>
+</div>
+<div class="modal-body">
+        <p class="mb-10">您好，确认删除这个角色么？</p>
+</div>
+<div class="modal-footer">
+        <button class="btn btn-primary radius" onClick="postRoleDelData()">确定</button> <button class="btn radius" data-dismiss="modal" aria-hidden="true">关闭</button>
+</div>
+
+
+ <!-- 分割  -->
+
+
+<script id="navMain" type="text/x-handlebars-template">
+        <i class="location-icon"></i><span>您的位置：</span><span>系统配置</span><span class="c-999 en">&gt;</span><span class="c-primary">角色管理</span>
+        <input class="btn size-MINI radius f-r mr-30 mt-5" type="button" value="新增" onclick="roleNewData()">
+</script>
+<script id="navCheck" type="text/x-handlebars-template">
+        <i class="location-icon"></i><span>您的位置：</span><span>系统配置</span><span class="c-999 en">&gt;</span><span>角色管理</span><span class="c-999 en">&gt;</span><span class="c-primary">查看</span>
+        <input class="btn size-MINI radius f-r mr-30 mt-5" type="button" value="返回" onClick="roleManagement()">
+</script>
+<script id="navEdit" type="text/x-handlebars-template">
+        <i class="location-icon"></i><span>您的位置：</span><span>系统配置</span><span class="c-999 en">&gt;</span><span>角色管理</span><span class="c-999 en">&gt;</span><span class="c-primary">编辑</span>
+        <input class="btn size-MINI radius f-r mr-30 mt-5" type="button" value="返回" onClick="roleManagement()">
+</script>
+
+<script id="getColumnTableData" type="text/x-handlebars-template"> //主内容
+        \{{#each result.resultList}}
+                <tr getId="\{{id}}" name="\{{name}}">
+                      <td class="col-2">\{{description}}</td>
+                      <td class="col-7">
+						  \{{#each permissions}}
+							\{{description}}&nbsp;&nbsp;
+						  \{{/each}}	
+					  </td>
+                      <td class="col-1">启用</td>
+                      <td class="col-2">
+                              <input class="btn btn-secondary size-S radius" type="button" value="查看" onClick="checkDataRole(this)">
+                              <input class="btn btn-primary size-S radius" type="button" value="编辑" onClick="editDataRole(this)">
+                              <a data-toggle="modal" href="#myModal" class="btn btn-danger  size-S radius" onClick="delRoleMode(this)">删除</a>
+                      </td>
+                </tr>
+        \{{/each}}
+</script>
+<script id="getCheckDataRole" type="text/x-handlebars-template">  //查询表格数据
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">角色名称 ：</td>
+				<td class="col-11"><input  type="text" disabled="disabled" class="input-text input-col-3 bgTextColoe" value="\{{result.description}}"></td>
+		</tr>
+		<tr>
+			
+				<td class="col-1 text-r table-bgc-f5 va-t">授权 ：</td>
+				<td class="col-11">
+					<textarea class="input-text input-col-3 bgTextColoe" disabled="disabled">\{{#each result.permissions}}&nbsp;&nbsp;\{{description}}\{{/each}}</textarea>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">状态 ：</td>
+				<td class="col-11"><input type="text" class="input-text input-col-3 bgTextColoe" value="已启用" disabled="disabled"></td>
+		</tr>
+</script> 
+<script id="getEditDataRole" type="text/x-handlebars-template">  //编辑表格数据
+		<tr id="roleId">
+				<td class="col-4 text-r table-bgc-f5">角色名称 ：</td>
+				<td class="col-8" colspan="2"><input  type="text" class="input-text input-col-3 bgTextColoe" value="\{{result.description}}" id="roleDescription"></td>
+		</tr>
+		<tr>
+				<td class="col-4 text-r table-bgc-f5">状态 ：</td>
+				<td class="col-8" colspan="2">
+						<span class="select-box input-col-3">
+							  <select class="select" size="1" id="select">
+									<option value="0" selected="selected">已启用</option>
+									<option value="1">已停止</option>
+							  </select>
+						</span>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-12 text-c table-bgc-f5" colspan="3">授权</td>
+		</tr>
+		<tr>
+				<td class="col-4 text-c table-bgc-f5">菜单</td>
+				<td class="col-4 text-c table-bgc-f5">栏目</td>
+				<td class="col-4 text-c table-bgc-f5">功能</td>
+		</tr>
+		<tr>
+				<td class="col-4 ztree va-t" id="roleMenuTree"></td>
+				<td class="col-4 ztree va-t" id="roleFrontTree"></td>
+				<td class="col-4 va-t skin-minimal" id="roleOptTree"></td>
+		</tr>
+		<tr>
+                <td class="col-12 text-c" colspan="3"> <input type="button" class="btn btn-primary radius" value="提交" onClick="postRoleEditData()"></td>
+        </tr>
+</script> 
+<script id="getNewDataRole" type="text/x-handlebars-template">  //新增表格数据
+		<tr id="roleId">
+				<td class="col-4 text-r table-bgc-f5">角色名称 ：</td>
+				<td class="col-8" colspan="2"><input  type="text" class="input-text input-col-3 bgTextColoe" value="" id="roleDescription"></td>
+		</tr>
+		<tr>
+				<td class="col-4 text-r table-bgc-f5">状态 ：</td>
+				<td class="col-8" colspan="2">
+						<span class="select-box input-col-3">
+							  <select class="select" size="1" id="select">
+									<option value="0" selected="selected">已启用</option>
+									<option value="1">已停止</option>
+							  </select>
+						</span>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-12 text-c table-bgc-f5" colspan="3">授权</td>
+		</tr>
+		<tr>
+				<td class="col-4 text-c table-bgc-f5">菜单</td>
+				<td class="col-4 text-c table-bgc-f5">栏目</td>
+				<td class="col-4 text-c table-bgc-f5">功能</td>
+		</tr>
+		<tr>
+				<td class="col-4 ztree va-t" id="roleMenuTree"></td>
+				<td class="col-4 ztree va-t" id="roleFrontTree"></td>
+				<td class="col-4 va-t skin-minimal" id="roleOptTree"></td>
+		</tr>
+		<tr>
+                <td class="col-12 text-c" colspan="3"> <input type="button" class="btn btn-primary radius" value="提交" onClick="postRoleNewData()"></td>
+        </tr>
+</script> 
+
+<script>
+    new roleManagement();
+</script>

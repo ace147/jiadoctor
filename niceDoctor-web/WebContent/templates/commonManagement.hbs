@@ -1,0 +1,44 @@
+<nav class="breadcrumb" id="pathContainer"></nav>
+
+<table id="onClickDataTable" class="page table table-border table-bordered table-hover col-98">
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">公司名字 ：</td>
+				<td class="col-11"><input id="newColumnContent" type="text" class="input-text input-col-3 bgTextColoe" value=""></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">公司英文简称 ：</td>
+				<td class="col-11"><input id="newColumnContent" type="text" class="input-text input-col-3 bgTextColoe" value=""></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5 va-t">内页背景图 ：</td>
+				<td class="col-11">
+						<div>
+							 <img id="preview" src="" width="100" height="100" style="display: block;border:1px solid #dfdfdf" />
+							 <input type="file" id="doc" name="file" multiple="multiple" onchange="javascript:setImagePreview(this);" class="mt-10">
+						</div>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5 va-t">公司logo ：</td>
+				<td class="col-11">
+						<div>
+							 <img id="preview" src="" width="100" height="100" style="display: block;border:1px solid #dfdfdf" />
+							 <input type="file" id="logo" name="file" multiple="multiple" onchange="javascript:setImagePreview(this);" class="mt-10">
+						</div>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 table-bgc-f5"></td>
+                <td class="col-11 text-l"> <input type="button" class="btn btn-primary radius" value="保存" onClick="postNewPermissionData()"></td>
+        </tr>
+</table>
+
+ <!-- 分割  -->
+
+<script id="navMain" type="text/x-handlebars-template">
+        <i class="location-icon"></i><span>您的位置：</span><span>基本配置</span><span class="c-999 en">&gt;</span><span class="c-primary">公共信息管理</span>
+</script>
+<script>
+	new commonManage();
+</script>
+

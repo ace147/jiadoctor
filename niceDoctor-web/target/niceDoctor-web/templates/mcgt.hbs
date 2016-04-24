@@ -1,0 +1,102 @@
+﻿<nav class="breadcrumb" id="pathContainer"></nav>
+<div class="Hui-article mt-10" id="userManage">
+        <div class="table-maxHeight" style="height:auto">
+				<table class="table table-border page table-bordered table-hover bt-none">
+						<tbody class="row cl" id="ColumnTableData"></tbody>
+				</table>
+        </div>
+</div>
+
+<table id="onClickDataTable" class="page table table-border table-bordered table-hover col-98" style="display:none"></table>
+
+<div id="myModal" class="modal hide fade field" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+			<h3 id="myModalLabel" class="h3">添加字段</h3>
+			<a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();">×</a>
+	</div>
+	<div class="modal-body">
+			<table class="modal-mcgt">
+					<tr>
+							<td class="col-3 text-r table-bgc-f5">字段名称 ：</td>
+							<td class="col-9"><input type="text" class="input-text input-col-6" id="field-name" name="moduleName"></td>
+					</tr>
+					<tr>
+							<td class="col-3 text-r table-bgc-f5">字段类型 ：</td>
+							<td class="col-9">
+								<select class="select input-text input-col-6" size="1" id="field-type">
+									<option value="int" selected="selected">int</option>
+									<option value="varchar">varchar</option>
+									<option value="datetime">datetime</option>
+									<option value="float">float</option>
+									<option value="double">double</option>
+									<option value="longtext">longtext</option>
+								</select>
+							</td>
+					</tr>
+					<tr>
+							<td class="col-3 text-r table-bgc-f5">字段长度 ：</td>
+							<td class="col-9"><input type="text" class="input-text input-col-6" id="field-length"></td>
+					</tr>
+					<tr>
+							<td class="col-3 text-r table-bgc-f5">是否非空 ：</td>
+							<td class="col-9"><input type="text" class="input-text input-col-6" id="field-null"></td>
+					</tr>
+					<tr>
+							<td class="col-3 text-r table-bgc-f5">默认值 ：</td>
+							<td class="col-9"><input type="text" class="input-text input-col-6" id="field-default"></td>
+					</tr>
+					<tr>
+							<td class="col-3 text-r table-bgc-f5">字段描述 ：</td>
+							<td class="col-9"><input type="text" class="input-text input-col-6" id="field-describe"></td>
+					</tr>
+			</table>
+	</div>
+	<div class="modal-footer">
+			<button class="btn btn-primary radius" onclick="fieldSure(this)">确定</button> <button class="btn radius" data-dismiss="modal" aria-hidden="true">关闭</button>
+	</div>
+</div>
+
+ <!-- 分割  -->
+
+
+<script id="navMain" type="text/x-handlebars-template">
+        <i class="location-icon"></i><span>您的位置：</span><span class="c-primary">MCGT</span>
+</script>
+
+<script id="getColumnTableData" type="text/x-handlebars-template">
+        <tr>
+				<td class="col-1 text-r table-bgc-f5">项目路径 ：</td>
+                <td class="col-11"><input type="text" class="input-text input-col-3" id="projectRootPathInput" name="projectRootPath"></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">功能名 ：</td>
+				<td class="col-11"><input type="text" class="input-text input-col-3" id="mcgtFieldNameDesc" name="moduleName"></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">显示名称 ：</td>
+				<td class="col-11"><input type="text" class="input-text input-col-3" id="mcgtFieldName" name="moduleNameDesc"></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">表名 ：</td>
+				<td class="col-11"><input type="text" class="input-text input-col-3" id="mcgtTableName" name="name"></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">表名描述 ：</td>
+				<td class="col-11"><input type="text" class="input-text input-col-3" id="mcgtTableNameDesc" name="comment"></td>
+		</tr>
+		<tr id="fieldTr">
+				<td class="col-1 text-r table-bgc-f5 va-t">字段 ：</td>
+				<td class="col-11">
+						<p><input type="text" class="input-text input-col-3 mb-10 bgTextColoe" disabled="disabled"></p>
+						<span class="c-primary upload-url" data-toggle="modal" href="#myModal">添加字段</span>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 table-bgc-f5"></td>
+				<td class="text-l col-11"> <input class="btn btn-primary radius" type="submit" value="提交" onclick="McgtPost()"></td>
+		</tr>
+	
+</script>
+<script>
+    new userManage();
+</script>

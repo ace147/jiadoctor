@@ -1,0 +1,27 @@
+
+<script id="navMenu" type="text/x-handlebars-template">
+		<ul id="Huifold" class="Huifold">
+		\{{#each data}}
+				\{{#if child}}
+						<dl class="item">
+							<h4><i class="item-icon basic-setting"></i>\{{description}}<b>+</b></h4>
+							<dd class="info">
+								<ul>
+									\{{#each child}}
+									<li><a href="\{{uri}}" class="primary ajaxLoad">\{{description}}</a></li>
+									\{{/each}}
+								</ul>
+							</dd>
+						</dl>
+				\{{/if}}
+				
+				\{{#error child}}
+						<dl class="item column-setting-item">
+							<a href="\{{uri}}" class="ajaxLoad"><h4><i class="item-icon system-data"></i>\{{description}}<b>+</b></h4></a>
+						</dl>
+				\{{/error}}
+		\{{/each}}
+</script>
+<script>
+	new navMenu();
+</script>

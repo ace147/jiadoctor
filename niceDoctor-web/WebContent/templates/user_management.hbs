@@ -1,0 +1,211 @@
+﻿<nav class="breadcrumb" id="pathContainer"></nav>
+<div class="Hui-article mt-10" id="userManage">
+        <table class="table table-border table-bordered table-bgcolor-gary">
+                 <thead class="text-c row cl">
+                        <tr>
+								<th class="col-1">序号</th>
+                                <th class="col-1">用户名</th>
+                                <th class="col-1">角色</th>
+                                <th class="col-1">真实名字</th>
+                                <th class="col-2">联系方式</th>
+                                <th class="col-1">状态</th>
+                                <th class="col-5">操作</th>
+                        </tr>
+                 </thead>
+        </table>
+        <div class="table-maxHeight">
+                <table class="table table-border table-bordered table-hover bt-none">
+                        <tbody class="text-c row cl" id="ColumnTableData"></tbody>
+                </table>
+        </div>
+        <div id="layPage" class="text-c mt-20"></div>
+</div>
+
+<table id="onClickDataTable" class="page table table-border table-bordered table-hover col-98" style="display:none"></table>
+
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+			<h3 id="myModalLabel" class="h3">删除</h3>
+			<a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();">×</a>
+	</div>
+	<div class="modal-body">
+			<p class="mb-10">您好，确认删除这个用户么？</p>
+	</div>
+	<div class="modal-footer">
+			<button class="btn btn-primary radius" onClick="deleteUser()">确定</button> <button class="btn radius" data-dismiss="modal" aria-hidden="true">关闭</button>
+	</div>
+</div>
+
+ <!-- 分割  -->
+
+
+<script id="navMain" type="text/x-handlebars-template">
+        <i class="location-icon"></i><span>您的位置：</span><span>系统配置</span><span class="c-999 en">&gt;</span><span class="c-primary">用户管理</span>
+        <input class="btn size-S radius f-r mr-30 mt-5" type="button" value="新增" onClick="newData()">
+</script>
+<script id="navCheck" type="text/x-handlebars-template">
+        <i class="location-icon"></i><span>您的位置：</span><span>系统配置</span><span class="c-999 en">&gt;</span><span>用户管理</span><span class="c-999 en">&gt;</span><span class="c-primary">查看用户信息</span>
+        <input class="btn size-S radius f-r mr-30 mt-5" type="button" value="返回" onClick="userManage()">
+</script>
+<script id="navEdit" type="text/x-handlebars-template">
+        <i class="location-icon"></i><span>您的位置：</span><span>系统配置</span><span class="c-999 en">&gt;</span><span>用户管理</span><span class="c-999 en">&gt;</span><span class="c-primary">编辑用户信息</span>
+        <input class="btn size-S radius f-r mr-30 mt-5" type="button" value="返回" onClick="userManage()">
+</script>
+<script id="navSetPassword" type="text/x-handlebars-template">
+        <i class="location-icon"></i><span>您的位置：</span><span>系统配置</span><span class="c-999 en">&gt;</span><span>用户管理</span><span class="c-999 en">&gt;</span><span class="c-primary">修改密码</span>
+        <input class="btn size-S radius f-r mr-30 mt-5" type="button" value="返回" onClick="userManage()">
+</script>
+<script id="navNewData" type="text/x-handlebars-template">
+        <i class="location-icon"></i><span>您的位置：</span><span>系统配置</span><span class="c-999 en">&gt;</span><span>用户管理</span><span class="c-999 en">&gt;</span><span class="c-primary">添加用户信息</span>
+        <input class="btn size-S radius f-r mr-30 mt-5" type="button" value="返回" onClick="userManage()">
+</script>
+
+<script id="getColumnTableData" type="text/x-handlebars-template"> //主内容 
+        \{{#each result.resultList}}
+                <tr>
+					  <td class="col-1" userId="\{{id}}">\{{addOne @index}}</td>
+                      <td class="col-1">\{{username}}</td>
+					  <td class="col-1">
+						   \{{#each roles}}
+								\{{description}}
+						   \{{/each}}
+					   </td>
+                      <td class="col-1">\{{nickName}}</td>
+                      <td class="col-2">\{{mobilePhone}}</td>
+                      <td class="col-1">\{{status}}</td>
+                      <td class="col-5">
+                              <input class="btn btn-secondary size-S radius" type="button" value="查看" onClick="checkData(this)">
+                              <input class="btn btn-primary size-S radius" type="button" value="编辑" onClick="editData(this)">
+                              <input class="btn btn-danger  size-S radius" type="button" value="重置密码" onClick="setPassword(this)">
+                              <a data-toggle="modal" href="#myModal" class="btn btn-danger  size-S radius" onclick="modalUser(this)">删除</a>
+                      </td>
+                </tr>
+        \{{/each}}
+</script>
+<script id="getCheckData" type="text/x-handlebars-template">  //查询表格数据
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">id ：</td>
+				<td class="col-11"><input type="text" disabled class="input-text input-col-3 bgTextColoe" value="\{{result.id}}"></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">用户名 ：</td>
+				<td class="col-11"><input type="text" disabled class="input-text input-col-3 bgTextColoe" value="\{{result.username}}"></td>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">真实姓名 ：</td>
+				<td class="col-11"><input type="text" disabled class="input-text input-col-3 bgTextColoe" value="\{{result.nickName}}"></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">联系方式 ：</td>
+				<td class="col-11"><input type="text" disabled class="input-text input-col-3 bgTextColoe" value="\{{result.mobilePhone}}"></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">状态 ：</td>
+				<td class="col-11"><input type="text" disabled class="input-text input-col-3 bgTextColoe" value="\{{result.status}}"></td>
+		</tr>
+</script>              
+
+<script id="getEditData" type="text/x-handlebars-template">  //编辑表格数据
+        <tr>
+                <td class="col-1 text-r table-bgc-f5">用户名 ：</td>
+                <td class="col-11"><input type="text" class="input-text input-col-3" value="\{{result.user.username}}" id="username"></td>
+        </tr>
+        <tr>
+                <td class="col-1 text-r table-bgc-f5">真实姓名 ：</td>
+                <td class="col-11"><input type="text" class="input-text input-col-3" value="\{{result.user.nickName}}" id="nickName"></td>
+        </tr>
+        <tr>
+                <td class="col-1 text-r table-bgc-f5">所属角色 ：</td>
+                <td class="col-11" id="role">
+						\{{#each result.role.resultList}}
+                        <input type="checkbox" value="\{{id}}"><span class="ml-5">\{{description}}</span>
+						\{{/each}}
+                </td>
+        </tr>
+        <tr>
+                <td class="col-1 text-r table-bgc-f5">联系电话 ：</td>
+                <td class="col-11"><input type="text" class="input-text input-col-3" value="\{{result.user.mobilePhone}}" id="mobilePhone"></td>
+        </tr>
+        <tr>
+                <td class="col-1 text-r table-bgc-f5">状态 ：</td>
+                <td class="col-11"> 
+                    <span class="select-box input-col-3">
+                          <select class="select" size="1" name="demo1" id="select">
+                                <option value="1" selected="selected">已启动</option>
+                                <option value="0">已停用</option>
+                          </select>
+                    </span>
+                </td>
+        </tr>
+        <tr>
+				<td class="col-1 table-bgc-f5"></td>
+                <td class="col-11 text-l"> <input class="btn btn-primary radius" type="submit" value="提交" id="submitBtn" onClick="postEditData(this)"></td>
+        </tr>
+</script>
+
+<script id="getSetPassword" type="text/x-handlebars-template">  //修改密码
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">授权密码 ：</td>
+				<td class="col-11"><input type="text" class="input-text input-col-3" id="userPassword"></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">新密码 ：</td>
+				<td class="col-11"><input type="password" class="input-text input-col-3" id="newPassword"></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">重复新密码 ：</td>
+				<td class="col-11"><input type="password" class="input-text input-col-3"></td>
+		</tr>
+		<tr>
+				<td class="col-1 table-bgc-f5"></td>
+				<td class="text-l col-11"> <input class="btn btn-primary radius" onClick="postPassword()" type="submit" value="修改密码"></td>
+		</tr>
+</script>
+
+<script id="getNewData" type="text/x-handlebars-template">  //新增数据
+        <tr>
+                <td class="col-1 text-r table-bgc-f5">用户名 ：</td>
+                <td class="col-11"><input type="text" class="input-text input-col-3" id="newUserName"></td>
+        </tr>
+        <tr>
+                <td class="col-1 text-r table-bgc-f5">密码 ：</td>
+                <td class="col-11"><input type="password" class="input-text input-col-3" id="newPassWord"></td>
+        </tr>
+        <tr>
+                <td class="col-1 text-r table-bgc-f5">重复密码 ：</td>
+                <td class="col-11"><input type="password" class="input-text input-col-3" id="newRepPass"></td>
+        </tr>
+        <tr>
+                <td class="col-1 text-r table-bgc-f5">真实姓名 ：</td>
+                <td class="col-11"><input type="text" class="input-text input-col-3" id="newName"></td>
+        </tr>
+        <tr>
+                <td class="col-1 text-r table-bgc-f5">所属角色 ：</td>
+                <td class="col-11" id="role">
+						\{{#each result.resultList}}
+                        <input type="checkbox" value="\{{id}}"><span class="ml-5">\{{description}}</span>
+						\{{/each}}
+                </td>
+        </tr>
+        <tr>
+                <td class="col-1 text-r table-bgc-f5">联系方式 ：</td>
+                <td class="col-11"><input type="text" class="input-text input-col-3" id="newPhone"></td>
+        </tr>
+        <tr>
+                <td class="col-1 text-r table-bgc-f5">状态 ：</td>
+                <td class="col-11">
+                    <span class="select-box input-col-3">
+                          <select class="select" size="1" name="demo1" id="select">
+                                <option value="1" selected="selected">已启动</option>
+                                <option value="0">已停用</option>
+                          </select>
+                    </span>
+                </td>
+        </tr>
+        <tr>
+				<td class="col-1 table-bgc-f5"></td>
+                <td class="col-11 text-l"> <input type="button" class="btn btn-primary radius" value="提交" onClick="postNewData()"></td>
+        </tr>
+</script>
+<script>
+    new userManage();
+</script>

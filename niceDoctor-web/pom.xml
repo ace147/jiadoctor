@@ -1,0 +1,105 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.jiadoctor</groupId>
+	<artifactId>niceDoctor-web</artifactId>
+	<packaging>war</packaging>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>niceDoctor web</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<mccms.version>1.0.0-SNAPSHOT</mccms.version>
+	</properties>
+
+	<dependencies>
+
+		<!-- mccms begin -->
+		<dependency>
+			<groupId>com.jiadoctor</groupId>
+			<artifactId>niceDoctor-common</artifactId>
+			<version>${mccms.version}</version>
+		</dependency>
+		
+		
+		<dependency>
+			<groupId>com.jiadoctor</groupId>
+			<artifactId>niceDoctor-system</artifactId>
+			<version>${mccms.version}</version>
+		</dependency>
+		
+		<!-- mccms end -->
+		
+		<!-- web jstl begin -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<!-- web jstl end -->
+
+		<!-- baidu ueditor begin -->
+		<!-- <dependency>
+			<groupId>com.baidu</groupId>
+			<artifactId>ueditor</artifactId>
+			<version>1.1.1</version>
+		</dependency> -->
+		<!-- baidu ueditor end -->
+
+		<!-- json begin,ueditor dependency json -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20151123</version>
+		</dependency>
+		<!-- json end -->
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<finalName>niceDoctor-web</finalName>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+					<encoding>utf8</encoding>
+				</configuration>
+			</plugin>
+		</plugins>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<configuration>
+						<warName>niceDoctor-web</warName>
+						<webXml>WebContent\WEB-INF\web.xml</webXml>
+						<warSourceDirectory>WebContent</warSourceDirectory>
+						<webResources>
+							<resource>
+								<directory>${project.basedir}/lib</directory>
+								<targetPath>WEB-INF/lib</targetPath>
+								<includes>
+									<include>**/*.jar</include>
+								</includes>
+							</resource>
+						</webResources>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>

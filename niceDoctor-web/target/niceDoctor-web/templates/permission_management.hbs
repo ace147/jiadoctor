@@ -1,0 +1,153 @@
+﻿<nav class="breadcrumb" id="pathContainer"></nav>
+<div class="Hui-article mt-10" id="permissionManage">
+        <table class="table table-border table-bordered table-bgcolor-gary">
+                 <thead class="text-c row cl">
+                        <tr>
+								<th class="col-5">菜单</th>
+                                <th class="col-5">栏目</th>
+                                <th class="col-2">功能</th>
+                        </tr>
+                 </thead>
+        </table>
+        <div class="table-maxHeight" style="height:auto">
+                <table class="table table-border table-bordered table-hover bt-none">
+                        <tbody class="text-c row cl" id="ColumnTableData"></tbody>
+                </table>
+        </div>
+</div>
+
+<table id="onClickDataTable" class="page table table-border table-bordered table-hover col-98" style="display:none"></table>
+
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+			<h3 id="myModalLabel" class="h3">删除</h3>
+			<a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();">×</a>
+	</div>
+	<div class="modal-body">
+			<p class="mb-10">您好，确认删除这个权限么？</p>
+	</div>
+	<div class="modal-footer">
+			<button class="btn btn-primary radius" onClick="postDelPermissionData(this)">确定</button> <button class="btn radius" data-dismiss="modal" aria-hidden="true">关闭</button>
+	</div>
+</div>
+
+<div id="parentsZTree" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+			<h3 id="myModalLabel" class="h3">父级权限</h3>
+			<a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();">×</a>
+	</div>
+	<div class="modal-body">
+			<div class="modal-treeMenu"></div>
+			<div class="modal-treeFront"></div>
+	</div>
+	<div class="modal-footer">
+			<button class="btn btn-primary radius" onClick="sureParents(this)">确定</button> <button class="btn radius" data-dismiss="modal" aria-hidden="true">关闭</button>
+	</div>
+</div>
+ <!-- 分割  -->
+
+
+<script id="navMain" type="text/x-handlebars-template">
+        <i class="location-icon"></i><span>您的位置：</span><span>系统配置</span><span class="c-999 en">&gt;</span><span class="c-primary">权限管理</span>
+        <input class="btn size-S radius f-r mr-30 mt-5" type="button" value="新增" onClick="permissionNewData(this)">
+</script>
+<script id="navCheck" type="text/x-handlebars-template">
+        <i class="location-icon"></i><span>您的位置：</span><span>系统配置</span><span class="c-999 en">&gt;</span><span>权限管理</span><span class="c-999 en">&gt;</span><span class="c-primary">查看权限信息</span>
+        <input class="btn size-S radius f-r mr-30 mt-5" type="button" value="返回" onClick="permissionManage(this)">
+</script>
+<script id="navEdit" type="text/x-handlebars-template">
+        <i class="location-icon"></i><span>您的位置：</span><span>系统配置</span><span class="c-999 en">&gt;</span><span>权限管理</span><span class="c-999 en">&gt;</span><span class="c-primary">编辑权限信息</span>
+        <input class="btn size-S radius f-r mr-30 mt-5" type="button" value="返回" onClick="permissionManage(this)">
+</script>
+<script id="navNewData" type="text/x-handlebars-template">
+        <i class="location-icon"></i><span>您的位置：</span><span>系统配置</span><span class="c-999 en">&gt;</span><span>权限管理</span><span class="c-999 en">&gt;</span><span class="c-primary">添加权限信息</span>
+        <input class="btn size-S radius f-r mr-30 mt-5" type="button" value="返回" onClick="permissionManage(this)">
+</script>
+
+<script id="getColumnTableData" type="text/x-handlebars-template"> //主内容 
+		<tr>
+			  <td class="col-5 treeTip">
+					<ul id="treeMenu" class="ztree"></ul>
+			  </td>
+			  <td class="col-5 treeTip">
+					<ul id="treeFront" class="ztree"></ul>
+			  </td>
+			  <td class="col-2 va-t pt-20 pl-20">
+					\{{#each result.opt}}
+							<div class="text-l">
+									<a class="mr-20">\{{description}}</a>
+									<a>删除</a>
+							</div>
+					\{{/each}}
+			  </td>
+		</tr>
+</script>
+<script id="getNewData" type="text/x-handlebars-template">  //新增表格数据
+		<tr id="permFirstTr">
+				<td class="col-1 text-r table-bgc-f5">父级权限 ：</td>
+				<td class="col-11"><a data-toggle="modal" href="#parentsZTree" onclick="newChooseTree(this)"><input  type="text" disabled="disabled" class="input-text input-col-3 bgTextColoe" value="" id="sureParents"></a></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">权限名称 ：</td>
+				<td class="col-11"><input type="text" class="input-text input-col-3 bgTextColoe" value="" id="permissionName"></td>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">显示名称 ：</td>
+				<td class="col-11"><input type="text" class="input-text input-col-3 bgTextColoe" value="" id="permissionDescription"></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">URI ：</td>
+				<td class="col-11"><input type="text" class="input-text input-col-3 bgTextColoe" value="" id="uri"></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">权限类型 ：</td>
+				<td class="col-11">
+						<span class="select-box input-col-3">
+							  <select class="select" size="1" id="select">
+									<option value="0" selected="selected">菜单</option>
+									<option value="1">栏目</option>
+									<option value="2">功能</option>
+							  </select>
+						</span>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 table-bgc-f5"></td>
+                <td class="col-11 text-l"> <input type="button" class="btn btn-primary radius" value="提交" onClick="postNewPermissionData()"></td>
+        </tr>
+</script> 
+<script id="getEditData" type="text/x-handlebars-template">  //编辑表格数据
+		<tr id="permFirstTr">
+				<td class="col-1 text-r table-bgc-f5">父级权限 ：</td>
+				<td class="col-11"><a data-toggle="modal" href="#parentsZTree" onclick="newChooseTree(this)"><input  type="text" disabled="disabled" class="input-text input-col-3 bgTextColoe" value="" id="parPermission"></a></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">权限名称 ：</td>
+				<td class="col-11"><input type="text" class="input-text input-col-3 bgTextColoe" value="\{{result.name}}" id="permissionName"></td>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">显示名称 ：</td>
+				<td class="col-11"><input type="text" class="input-text input-col-3 bgTextColoe" value="\{{result.description}}" id="permissionDescription"></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">URI ：</td>
+				<td class="col-11"><input type="text" class="input-text input-col-3 bgTextColoe" value="" id="uri"></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">权限类型 ：</td>
+				<td class="col-11">
+						<span class="select-box input-col-3">
+							  <select class="select" size="1" id="select">
+									<option value="0" selected="selected">菜单</option>
+									<option value="1">栏目</option>
+									<option value="2">功能</option>
+							  </select>
+						</span>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 table-bgc-f5"></td>
+                <td class="col-11 text-l"> <input type="button" class="btn btn-primary radius" value="提交" onClick="postEditPermissionData()"></td>
+        </tr>
+</script> 
+<script>
+    new permissionManage();
+</script>

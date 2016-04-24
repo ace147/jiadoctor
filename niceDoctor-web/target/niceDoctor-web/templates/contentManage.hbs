@@ -1,0 +1,294 @@
+<nav class="breadcrumb" id="pathContainer"></nav>
+<div class="Hui-article mt-10" id="contentManage">
+        <table class="table table-border table-bordered table-bgcolor-gary">
+                 <thead class="text-c row cl">
+                        <tr>
+								<th class="col-1">序号</th>
+								<th class="col-2">标题</th>
+								<th class="col-2">文档作者</th>
+								<th class="col-2">更新时间</th>
+								<th class="col-2">状态</th>
+								<th class="col-3">操作</th>
+                        </tr>
+                 </thead>
+        </table>
+        <div class="table-maxHeight">
+                <table class="table table-border table-bordered table-hover bt-none">
+                        <tbody class="text-c row cl" id="ColumnTableData"></tbody>
+                </table>
+        </div>
+        <div id="layPage" class="text-c mt-20"></div>
+</div>
+
+<table id="onClickDataTable" class="page table table-border table-bordered table-hover col-98" style="display:none"></table>
+<div id="htmlCheckContent" class="page table table-border table-bordered table-hover col-98" style="display:none"></div>
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+			<h3 class="h3">删除</h3>
+			<a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();">×</a>
+	</div>
+	<div class="modal-body">
+			<p class="mb-10">您好，确认删除这个新闻么？</p>
+	</div>
+	<div class="modal-footer">
+			<button class="btn btn-primary radius" onClick="postDelContentData(this)">确定</button> <button class="btn radius" data-dismiss="modal" aria-hidden="true">关闭</button>
+	</div>
+</div>
+
+ <!-- 分割  -->
+
+<script id="navMain" type="text/x-handlebars-template">
+        <i class="location-icon"></i><span>您的位置：</span><span>栏目配置</span><span class="c-999 en">&gt;</span><span>栏目管理</span><span class="c-999 en">&gt;</span><span class="c-primary">新闻列表</span>
+		<input class="btn size-S radius f-r mr-30 mt-5" type="button" value="新增" onClick="contentNew()">
+		
+</script>
+<script id="navCheck" type="text/x-handlebars-template">
+        <i class="location-icon"></i><span>您的位置：</span><span>栏目配置</span><span class="c-999 en">&gt;</span><span>栏目管理</span><span class="c-999 en">&gt;</span><span>新闻列表</span><span class="c-999 en">&gt;</span><span class="c-primary">查看</span>
+        <input class="btn size-S radius f-r mr-30 mt-5" type="button" value="返回" onClick="updateContent()">
+</script>
+<script id="navNew" type="text/x-handlebars-template">
+        <i class="location-icon"></i><span>您的位置：</span><span>栏目配置</span><span class="c-999 en">&gt;</span><span>栏目管理</span><span class="c-999 en">&gt;</span><span>新闻列表</span><span class="c-999 en">&gt;</span><span class="c-primary">新增</span>
+        <input class="btn size-S radius f-r mr-30 mt-5" type="button" value="返回" onClick="updateContent()">
+</script>
+<script id="navEdit" type="text/x-handlebars-template">
+        <i class="location-icon"></i><span>您的位置：</span><span>栏目配置</span><span class="c-999 en">&gt;</span><span>栏目管理</span><span class="c-999 en">&gt;</span><span>新闻列表</span><span class="c-999 en">&gt;</span><span class="c-primary">编辑</span>
+        <input class="btn size-S radius f-r mr-30 mt-5" type="button" value="返回" onClick="updateContent()">
+</script>
+
+<script id="getColumnTableData" type="text/x-handlebars-template">
+		\{{#each result.resultList}}
+				<tr newId="\{{id}}">
+					<td class="col-1">\{{addOne @index}}</td>
+					<th class="col-2">\{{title}}</th>
+					<th class="col-2">\{{autor}}</th>
+					<th class="col-2">\{{editeTime}}</th>
+					<th class="col-2">\{{state}}</th>
+					<td class="col-3">
+						<input class="btn btn-secondary  size-S radius" type="button" value="查看" onClick="contentCheck(this)">
+						<input class="btn btn-primary size-S radius" type="button" value="编辑" onClick="contentEdit(this)">
+						<input data-toggle="modal" href="#myModal" class="btn btn-danger size-S radius" type="button" value="删除" onclick="columnConDel(this)">
+					</td>
+				</tr>
+		\{{/each}}
+</script>
+
+<script id="getCheckDataContent" type="text/x-handlebars-template">
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">栏目 ：</td>
+				<td class="col-11"><input id="newColumnContent" disabled="disabled" type="text" class="input-text input-col-3 bgTextColoe" value=""></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5 va-t">上传图片 ：</td>
+				<td class="col-11">
+						<div id="localImag">
+							 <img id="preview" src="" width="100" height="100" style="display: block;border:1px solid #dfdfdf" />
+							 <input type="file" id="doc" name="file" multiple="multiple" onchange="javascript:setImagePreview();" class="mt-10">
+						</div>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5 va-t">上传文件 ：</td>
+				<td class="col-11">
+					<input type="file" id="file" name="file" >
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5"> 文档标题 ：</td>
+				<td class="col-11"><input type="text" class="input-text input-col-3" id="postContentTitle" value=""></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">外部链接 ：</td>
+				<td class="col-11"><input  type="text" class="input-text input-col-3 bgTextColoe" id="postContentURL" value=""></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">关键字 ：</td>
+				<td class="col-11"><input  type="text" class="input-text input-col-3 bgTextColoe" id="postContentKey" value=""></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5 va-t">简短描述 ：</td>
+				<td class="col-11"><textarea id="postContentShortMeta" class="input-text input-col-3 bgTextColoe"></textarea></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">文档作者 ：</td>
+				<td class="col-11"><input id="postContentAutor"  type="text" class="input-text input-col-3 bgTextColoe" value=""></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">来源 ：</td>
+				<td class="col-11"><input  id="postContentSource" type="text" class="input-text input-col-3 bgTextColoe" value=""></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">特殊设置 ：</td>
+				<td class="col-11">
+						<input type="checkbox" id="postContentIsTop"><label for="postContentIsTop">是否为置顶文档</label>
+						<input type="checkbox" id="postContentIsCommend"><label for="postContentIsCommend">是否为推荐文</label>
+						<input type="checkbox" id="postContentisOnlyContent"><label for="postContentisOnlyContent">是否为单独内容样式</label>
+						<input type="checkbox" id="postContentIsShowedOnIndex"><label for="postContentIsShowedOnIndex">是否为首页滚动显示</label>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">状态 ：</td>
+				<td class="col-11">
+						<span class="select-box input-col-3">
+							  <select class="select" size="1" name="demo1" id="postColumnTemplate">
+									<option value="0" selected="selected">已通过</option>
+									<option value="1" selected="selected">未通过</option>
+									<option value="2" selected="selected">待审核</option>
+							  </select>
+						</span>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5 va-t">内容 ：</td>
+				<td class="col-11" id="ueditorId">
+						<script id="editor" type="text/plain" style="width:1024px;height:500px;"></script>
+				</td>
+		</tr>
+</script>
+
+<script id="getEditDataContent" type="text/x-handlebars-template"> 
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">栏目 ：</td>
+				<td class="col-11"><input id="newColumnContent" disabled="disabled" type="text" class="input-text input-col-3 bgTextColoe" value=""></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5 va-t">上传图片 ：</td>
+				<td class="col-11">
+						<div>
+							 <img id="preview" src="" width="100" height="100" style="display: block;border:1px solid #dfdfdf" />
+							 <input type="file" id="doc" name="file" multiple="multiple" onchange="javascript:setImagePreview(this);" class="mt-10">
+						</div>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5 va-t">上传文件 ：</td>
+				<td class="col-11">
+					<input type="file" id="file" name="file" >
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5"> 文档标题 ：</td>
+				<td class="col-11"><input type="text" class="input-text input-col-3" id="postContentTitle" value=""></td>
+		</tr>		
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">外部链接 ：</td>
+				<td class="col-11"><input  type="text" class="input-text input-col-3 bgTextColoe" id="postContentURL" value=""></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">关键字 ：</td>
+				<td class="col-11"><input  type="text" class="input-text input-col-3 bgTextColoe" id="postContentKey" value=""></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5 va-t">简短描述 ：</td>
+				<td class="col-11"><textarea id="postContentShortMeta" class="input-text input-col-3 bgTextColoe"></textarea></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">文档作者 ：</td>
+				<td class="col-11"><input id="postContentAutor"  type="text" class="input-text input-col-3 bgTextColoe" value=""></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">来源 ：</td>
+				<td class="col-11"><input  id="postContentSource" type="text" class="input-text input-col-3 bgTextColoe" value=""></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">特殊设置 ：</td>
+				<td class="col-11">
+						<input type="checkbox" id="postContentIsTop"><label for="postContentIsTop">是否为置顶文档</label>
+						<input type="checkbox" id="postContentIsCommend"><label for="postContentIsCommend">是否为推荐文</label>
+						<input type="checkbox" id="postContentisOnlyContent"><label for="postContentisOnlyContent">是否为单独内容样式</label>
+						<input type="checkbox" id="postContentIsShowedOnIndex"><label for="postContentIsShowedOnIndex">是否为首页滚动显示</label>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">状态 ：</td>
+				<td class="col-11">
+						<span class="select-box input-col-3">
+							  <select class="select" size="1" name="demo1" id="postColumnTemplate">
+									<option value="0" selected="selected">已通过</option>
+									<option value="1" selected="selected">未通过</option>
+									<option value="2" selected="selected">待审核</option>
+							  </select>
+						</span>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5 va-t">内容 ：</td>
+				<td class="col-11" id="ueditorId">
+						<script id="editor" type="text/plain" style="width:1024px;height:500px;"></script>
+				</td>
+		</tr>
+</script>
+<script id="getNewDataContent" type="text/x-handlebars-template"> 
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">栏目 ：</td>
+				<td class="col-11"><input id="newColumnContent" disabled="disabled" type="text" class="input-text input-col-3 bgTextColoe" value=""></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5 va-t">上传图片 ：</td>
+				<td class="col-11">
+						<div>
+							 <img id="preview" src="" width="100" height="100" style="display: block;border:1px solid #dfdfdf" />
+							 <input type="file" id="doc" name="file" multiple="multiple" onchange="javascript:setImagePreview(this);" class="mt-10">
+						</div>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5 va-t">上传文件 ：</td>
+				<td class="col-11">
+					<input type="file" id="file" name="file" >
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5"> 文档标题 ：</td>
+				<td class="col-11"><input type="text" class="input-text input-col-3" id="postContentTitle" value=""></td>
+		</tr>		
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">外部链接 ：</td>
+				<td class="col-11"><input  type="text" class="input-text input-col-3 bgTextColoe" id="postContentURL" value=""></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">关键字 ：</td>
+				<td class="col-11"><input  type="text" class="input-text input-col-3 bgTextColoe" id="postContentKey" value=""></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5 va-t">简短描述 ：</td>
+				<td class="col-11"><textarea id="postContentShortMeta" class="input-text input-col-3 bgTextColoe"></textarea></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">文档作者 ：</td>
+				<td class="col-11"><input id="postContentAutor"  type="text" class="input-text input-col-3 bgTextColoe" value=""></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">来源 ：</td>
+				<td class="col-11"><input  id="postContentSource" type="text" class="input-text input-col-3 bgTextColoe" value=""></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">特殊设置 ：</td>
+				<td class="col-11">
+						<input type="checkbox" id="postContentIsTop"><label for="postContentIsTop">是否为置顶文档</label>
+						<input type="checkbox" id="postContentIsCommend"><label for="postContentIsCommend">是否为推荐文</label>
+						<input type="checkbox" id="postContentisOnlyContent"><label for="postContentisOnlyContent">是否为单独内容样式</label>
+						<input type="checkbox" id="postContentIsShowedOnIndex"><label for="postContentIsShowedOnIndex">是否为首页滚动显示</label>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">状态 ：</td>
+				<td class="col-11">
+						<span class="select-box input-col-3">
+							  <select class="select" size="1" name="demo1" id="postColumnTemplate">
+									<option value="0" selected="selected">已通过</option>
+									<option value="1" selected="selected">未通过</option>
+									<option value="2" selected="selected">待审核</option>
+							  </select>
+						</span>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5 va-t">内容 ：</td>
+				<td class="col-11" id="ueditorId">
+						<script id="editor" type="text/plain" style="width:1024px;height:500px;"></script>
+				</td>
+		</tr>
+</script>
+<script>
+		new contentManage(jsonContent);
+</script>

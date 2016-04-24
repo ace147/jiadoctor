@@ -1,0 +1,74 @@
+<nav class="breadcrumb" id="pathContainer"></nav>
+
+<table id="onClickDataTable" class="page table table-border table-bordered table-hover col-98 tipTable"></table>
+
+ <!-- 分割  -->
+
+<script id="navMain" type="text/x-handlebars-template">
+        <i class="location-icon"></i><span>您的位置：</span><span>基本配置</span><span class="c-999 en">&gt;</span><span class="c-primary">站点管理</span>
+</script>
+<script id="mainTableSite" type="text/x-handlebars-template">
+		<tr siteId="\{{id}}">
+				<td class="col-1 text-r table-bgc-f5">站点名称 ：</td>
+				<td class="col-11">
+					<input id="siteName" type="text" class="input-text input-col-3 bgTextColoe" value="\{{siteName}}">
+					<span>可自定义</span>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">首页链接 ：</td>
+				<td class="col-11">
+					<input id="siteDomain" type="text" class="input-text input-col-3 bgTextColoe" value="\{{siteDomain}}">
+					<span>请修改为：http://您的域名:端口(本地域名可以使用127.0.0.1代替域名)</span>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">站点标题 ：</td>
+				<td class="col-11">
+					<input id="siteTitle" type="text" class="input-text input-col-3 bgTextColoe" value="\{{siteTitle}}">
+					<span>显示在网站的标题</span>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">站点端口 ：</td>
+				<td class="col-11">
+					<input id="sitePort" type="text" class="input-text input-col-3 bgTextColoe" value="\{{sitePort}}">
+					<span>请不要修改</span>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">关键字 ：</td>
+				<td class="col-11">
+					<input id="siteKeyword" type="text" class="input-text input-col-3 bgTextColoe" value="\{{siteKeyword}}">
+					<span>可自定义</span>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">描述 ：</td>
+				<td class="col-11">
+					<input id="siteDescribe" type="text" class="input-text input-col-3 bgTextColoe" value="\{{siteDescribe}}">
+					<span>生成静态网页时的主目录,例如(kgdoqi)</span>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">版权信息 ：</td>
+				<td class="col-11">
+					<textarea class="input-text input-col-3 bgTextColoe" id="siteRecode">\{{siteRecode}}</textarea>
+					<span>显示在网页底端的内容,支持HTML(特殊效果需要专业人士编写)</span>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">ICP备案 ：</td>
+				<td class="col-11">
+					<input id="siteCopyright" type="text" class="input-text input-col-3 bgTextColoe" value="\{{siteCopyright}}">
+					<span>ICP备案信息</span>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-1 table-bgc-f5"></td>
+                <td class="col-11 text-l"> <input type="button" class="btn btn-primary radius" value="保存" onClick="sitePost()"></td>
+        </tr>
+</script>
+<script>
+	new siteManage();
+</script>

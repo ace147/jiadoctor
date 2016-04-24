@@ -1,0 +1,85 @@
+<nav class="breadcrumb" id="pathContainer"></nav>
+<div class="Hui-article mt-10" id="templateManage">
+        <table class="table table-border table-bordered table-bgcolor-gary">
+                 <thead class="text-c row cl">
+                        <tr>
+								<th class="col-1">排序</th>
+								<th class="col-2">类型名称</th>
+								<th class="col-2">模板类型</th>
+								<th class="col-2">URL生成模板</th>
+								<th class="col-2">简介</th>
+								<th class="col-3">操作</th>
+                        </tr>
+                 </thead>
+        </table>
+        <div class="table-maxHeight">
+                <table class="table table-border table-bordered table-hover bt-none">
+                        <tbody class="text-c row cl" id="ColumnTableData"></tbody>
+                </table>
+        </div>
+        <div id="layPage" class="text-c mt-20"></div>
+</div>
+
+<table id="onClickDataTable" class="page table table-border table-bordered table-hover col-98" style="display:none"></table>
+
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+			<h3 class="h3">删除</h3>
+			<a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();">×</a>
+	</div>
+	<div class="modal-body">
+			<p class="mb-10">您好，确认删除这个权限么？</p>
+	</div>
+	<div class="modal-footer">
+			<button class="btn btn-primary radius" onClick="postDelColumnData(this)">确定</button> <button class="btn radius" data-dismiss="modal" aria-hidden="true">关闭</button>
+	</div>
+</div>
+
+ <!-- 分割  -->
+
+<script id="navMain" type="text/x-handlebars-template">
+        <i class="location-icon"></i><span>您的位置：</span><span>栏目配置</span><span class="c-999 en">&gt;</span><span class="c-primary">栏目管理</span>
+        <input class="btn size-S radius f-r mr-30 mt-5" type="button" value="新增" onClick="templateNewData()">
+</script>
+
+<script id="getColumnTableData" type="text/x-handlebars-template">
+		\{{#each result}}
+				<tr templateId="\{{id}}">
+					<td class="col-1">\{{addOne @index}}</td>
+					<th class="col-2">\{{name}}</th>
+					<th class="col-2">\{{templateType}}</th>
+					<th class="col-2">\{{templateUrl}}</th>
+					<th class="col-2">\{{intro}}</th>
+					<td class="col-3">
+						<input class="btn btn-secondary  size-S radius" type="button" value="查看" onClick="columnEdit(this)">
+						<input class="btn btn-primary size-S radius" type="button" value="编辑">
+						<input data-toggle="modal" href="#myModal" class="btn btn-danger size-S radius" type="button" value="删除" onclick="columnDel(this)">
+					</td>
+				</tr>
+		\{{/each}}
+</script>
+<script id="getNewDataTemplate" type="text/x-handlebars-template"> 
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">类型名称 ：</td>
+				<td class="col-11"><input  type="text" class="input-text input-col-3 bgTextColoe" value=""></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">模版类型 ：</td>
+				<td class="col-11"><input  type="text" class="input-text input-col-3 bgTextColoe" value=""></td>
+		</tr>
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">URL生成模板 ：</td>
+				<td class="col-11"><input type="text" class="input-text input-col-3" id="postColumnShortName" value=""></td>
+		</tr>		
+		<tr>
+				<td class="col-1 text-r table-bgc-f5">简介 ：</td>
+				<td class="col-11"><textarea class="input-text input-col-3 bgTextColoe"></textarea></td>
+		</tr>
+		<tr>
+				<td class="col-1 table-bgc-f5"></td>
+				<td class="text-l col-11"> <input class="btn btn-primary radius" onClick="columnPostNew()" type="submit" value="提交"></td>
+		</tr>
+</script>
+<script>
+	new templateManage();
+</script>

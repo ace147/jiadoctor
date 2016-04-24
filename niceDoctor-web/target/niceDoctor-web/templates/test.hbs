@@ -1,0 +1,135 @@
+<nav class="breadcrumb" id="pathContainer"></nav>
+<div class="Hui-article">
+    <form class="form form-horizontal responsive">
+
+        <!--     下拉框    -->
+        <div class="row cl">
+            <label class="form-label col-2">自定义下拉框：</label>
+            <div class="formControls col-5">
+                <span class="select-box">
+                  <select class="select" size="1" name="demo1">
+                    <option value="" selected>默认select</option>
+                    <option value="1">菜单一</option>
+                    <option value="2">菜单二</option>
+                    <option value="3">菜单三</option>
+                  </select>
+                </span>
+            </div>
+            <div class="col-5 c-secondary form-note text-overflow">
+                自定义
+            </div>
+        </div>
+        <!--     下拉框    -->
+
+        <!--     返回按钮    -->        
+        <input type="button" class="btn btn-default radius size-L"  value="返回">
+        <!--     返回按钮    -->
+
+
+        <!--     单选框    -->
+        <div class="row cl">
+            <div class="formControls skin-minimal col-5">
+                    <div class="radio-box">
+                        <input type="radio" id="option-1" name="option" >
+                        <label for="option-1">选项一</label>
+                    </div>
+                    <div class="radio-box">
+                        <input type="radio" id="option-2" name="option" checked>
+                        <label for="option-2">选项二</label>
+                    </div>
+                    <div class="radio-box">
+                        <input type="radio" id="option-3" name="option" disabled>
+                        <label for="option-3" class="disabled" >选项三</label>
+                    </div>
+            </div>
+        </div>
+        <!--     单选框    -->
+
+
+        <div class="row cl">
+            <label class="form-label col-2">站点名称：</label>
+            <div class="formControls col-5">
+                <input type="text" class="input-text" autocomplete="off">
+            </div>
+            <div class="col-5 c-secondary form-note text-overflow">
+                可自定义
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-2">首页链接：</label>
+            <div class="formControls col-5">
+                <input type="text" class="input-text" autocomplete="off">
+            </div>
+            <div class="col-5 c-secondary form-note text-overflow">
+                轻修改为http://您的域名端口/MCCMSA......
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-2">站点标题：</label>
+            <div class="formControls col-5">
+                <input type="text" class="input-text" autocomplete="off">
+            </div>
+            <div class="col-5 c-secondary form-note text-overflow">
+                显示在网站的标题
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-2">主目录名称：</label>
+            <div class="formControls col-5">
+                <input type="text" class="input-text" autocomplete="off">
+            </div>
+            <div class="col-5 c-secondary form-note text-overflow">
+                生成静态网站是得主目录，例如：kgdqi
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-2">网站端口：</label>
+            <div class="formControls col-5">
+                <input type="text" class="input-text" autocomplete="off">
+            </div>
+            <div class="col-5 c-secondary form-note text-overflow">
+                请不要修改
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-2">公司名称：</label>
+            <div class="formControls col-5">
+                <input type="text" class="input-text" autocomplete="off">
+            </div>
+            <div class="col-5 c-secondary form-note text-overflow">
+                可自定义
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-2">版权信息：</label>
+            <div class="formControls col-5">
+                <textarea class="textarea"></textarea>
+            </div>
+            <div class="col-5 c-secondary form-note text-overflow">
+                显示在网页底端的内容，支出HTML（特...
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-2">ICP备案号：</label>
+            <div class="formControls col-5">
+                <input type="text" class="input-text" autocomplete="off">
+            </div>
+            <div class="col-5 c-secondary form-note text-overflow">
+                ICP备案信息
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-10 col-offset-2">
+                <input class="btn btn-primary radius" type="submit" value="提交" id="submitBtn">
+            </div>
+        </div>
+    </form>
+</div>
+
+<script id="testLocalTemplate" type="text/x-handlebars-template">
+    <i class="location-icon"></i><span>您的位置：</span><span>\{{path1}}</span><span class="c-999 en">&gt;</span><span class="c-primary">\{{path2}}</span>
+</script>
+
+<script>
+    new iCheck(); //调用单选框
+</script>
